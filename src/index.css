@@ -1,68 +1,181 @@
+
+/* **********************************************      Ponemos el front más agradable a la vista               *****************************************************************************
+
+/* 1. Establecer variables de estilo global */
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
-
   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  --primary-color: #007bff;
+  --secondary-color: #6c757d;
+  --bg-color-light: #ffffff;
+  --bg-color-dark: #242424;
+  --card-bg-color: #f8f9fa;
 }
 
+/* 2. Estilo base de la página */
+body {
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: var(--bg-color-dark);
+  color: rgba(255, 255, 255, 0.87);
+}
+
+h1 {
+  font-size: 4rem;
+  line-height: 1.1;
+  font-weight: 700;
+  color: var(--primary-color);
+  letter-spacing: 3px;
+  text-align: center;
+  text-transform: uppercase;
+  background: linear-gradient(90deg, #6a82fb, #fc5c7d); /* Nueva combinación de colores */
+  -webkit-background-clip: text; /* Para compatibilidad con Safari */
+  background-clip: text; /* Propiedad estándar */
+  color: transparent;
+  animation: textGlow 2s ease-in-out infinite alternate;
+}
+
+/* Efecto de resplandor para el título */
+@keyframes textGlow {
+  0% {
+    text-shadow: 0 0 10px var(--primary-color), 0 0 20px var(--primary-color);
+  }
+  100% {
+    text-shadow: 0 0 20px var(--primary-color), 0 0 30px var(--primary-color);
+  }
+}
+
+h2 {
+  font-size: 2rem;
+  color: var(--secondary-color);
+  text-align: center;
+  margin-top: 1rem;
+}
+
+/* 3. Enlaces */
 a {
   font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
+  color: var(--primary-color);
+  text-decoration: none;
 }
+
 a:hover {
   color: #535bf2;
 }
 
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
-}
-
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
-}
-
+/* 4. Botones personalizados */
 button {
-  border-radius: 8px;
+  border-radius: 20px;
   border: 1px solid transparent;
   padding: 0.6em 1.2em;
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
   background-color: #1a1a1a;
+  color: #fff;
   cursor: pointer;
-  transition: border-color 0.25s;
+  transition: all 0.25s ease-in-out;
 }
+
 button:hover {
-  border-color: #646cff;
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
 }
+
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
+/* 5. Tarjetas de GIFs */
+.card {
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  background-color: var(--card-bg-color);
+  transition: transform 0.3s ease-in-out;
+}
+
+.card:hover {
+  transform: scale(1.05);
+}
+
+.card-img-top {
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.card-body {
+  padding: 1rem;
+}
+
+.card-title {
+  font-size: 1.1rem;
+  text-align: center;
+  color: var(--secondary-color);
+}
+
+/* 6. Estilo de los inputs */
+input[type="text"] {
+  border-radius: 20px;
+  border: 1px solid var(--primary-color);
+  padding: 10px;
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+/* 7. Estilo responsivo */
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
-    background-color: #ffffff;
+    background-color: var(--bg-color-light);
   }
+
   a:hover {
     color: #747bff;
   }
+
   button {
-    background-color: #f9f9f9;
+    background-color: var(--bg-color-light);
+  }
+
+  body {
+    background-color: var(--bg-color-light);
+    color: #000;
+  }
+
+  .card {
+    background-color: var(--card-bg-color);
+  }
+
+  .card-title {
+    color: var(--primary-color);
+  }
+}
+
+@media (max-width: 768px) {
+  h1 {
+    font-size: 2.5rem;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  .card-img-top {
+    max-height: 200px;
+    width: 100%;
   }
 }

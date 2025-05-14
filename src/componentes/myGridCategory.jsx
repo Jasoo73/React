@@ -4,10 +4,11 @@ import { useState, useEffect } from "react";
 // 'useEffect' permite ejecutar efectos secundarios, como hacer una petici�n a una API, despu�s de que el componente se monte.
 
 const API_KEY = import.meta.env.VITE_GIPHY_KEY;
+console.log("API_KEY:", API_KEY); // <-- Log aquí de depuración
 // Obtiene la API key desde las variables de entorno usando Vite
 // Este API_KEY se usa para autenticar las peticiones a la API de Giphy.
 
-export const GridGif = ({ category }) => {
+const GridGif = ({ category }) => {
     // El componente 'GridGif' recibe 'category' como prop. 
     // Esta es la categor�a que se utilizar� para buscar gifs relacionados en la API de Giphy.
 
@@ -15,32 +16,29 @@ export const GridGif = ({ category }) => {
     // useState define 'gifs' como el estado que contendr� los gifs obtenidos de la API.
     // Inicialmente, 'gifs' es un array vac�o.
 
-    const getGifs = async () => {
-        // Funci�n as�ncrona que se encarga de obtener los gifs desde la API de Giphy.
+    const getGifs = async () =>  {
+        //DEPURACIÓN.
+        console.log("Consultando gifs para categoría:", category);
 
-        const url = `https://api.giphy.com/v1/gifs/search?api_key=${API_KEY}&q=${category}&limit=5&offset=0&rating=g&lang=en&bundle=messaging_non_clips`;
-        // Construye la URL con la API key, la categor�a (query de b�squeda), y algunos par�metros adicionales como el l�mite de resultados (5), la clasificaci�n de los gifs (rating 'g'), y el idioma.
+        const url = `https://api.giphy.com/v1/gifs/search?api_key=${API_KEY}&q=${category}&limit=8&offset=0&rating=g&lang=en&bundle=messaging_non_clips`;
+        console.log("URL de consulta:", url);
 
-        const resp = await fetch(url);
-        // Realiza una petici�n HTTP a la API de Giphy. 'fetch' devuelve una promesa que se resuelve cuando la respuesta llega.
+        try {
+            const resp = await fetch(url);
+            const { data } = await resp.json();
+            console.log("Respuesta de Giphy:", data);
 
-        const { data } = await resp.json();
-        // Espera a que la respuesta se convierta a formato JSON, y extrae la propiedad 'data', que contiene los resultados de la b�squeda.
+            const gifs = data.map((gif) => ({
+            id: gif.id,
+            title: gif.title,
+            url: gif.images.fixed_height.webp,
+            }));
 
-        const gifs = data.map((gif) => {
-            // Mapea sobre cada objeto gif en 'data' para estructurarlo en un formato m�s simple.
-            // Para cada gif, devuelve un nuevo objeto con s�lo el 'id', 'title' (t�tulo) y la URL de la imagen en formato 'webp'.
-
-            return {
-                id: gif.id,
-                title: gif.title,
-                url: gif.images.fixed_height.webp,
-            };
-        });
-
-        setGifs(gifs);
-        // Actualiza el estado 'gifs' con los datos obtenidos y mapeados desde la API.
-    };
+            setGifs(gifs);
+        } catch (error) {
+            console.error("Error al obtener gifs:", error);
+        }
+        };
 
     useEffect(() => {
         getGifs();
@@ -49,31 +47,28 @@ export const GridGif = ({ category }) => {
     // El array vac�o como segundo argumento indica que este efecto solo debe ejecutarse una vez, justo despu�s del primer renderizado.
 
     return (
-        <div className="mt-3">
-            <h3>{category}</h3>
-            {/* Muestra el nombre de la categor�a actual en un t�tulo. */}
 
-            <div className="row align-items-center justify-content-center g-3">
-                {gifs.map((gif) => (
-                    <div key={gif.id} className="col-12 col-md-6 col-lg-4 col-xl-3">
-                        <div className="card">
-                            {/* Cada gif se representa dentro de una tarjeta (card) de Bootstrap. */}
+        //********************************************        PONEMOS EL FRONT MÁS BONITOOOO                                 ****************************************************** */
 
-                            <img
-                                src={gif.url}
-                                className="card-img-top"
-                                width="200px"
-                                height="auto"
-                            />
-                            {/* La imagen del gif se carga usando la URL obtenida de la API de Giphy. */}
-
-                            <div className="card-body">
-                                <h5 className="card-title">{gif.title}</h5>
-                            </div>
+        <div className="row">
+            {gifs.map((gif) => (
+                <div key={gif.id} className="col-12 col-md-4 col-lg-3 mb-4">
+                    <div className="card shadow-lg border-0 rounded">
+                        {/* Card con bordes redondeados y sombra */}
+                        <img
+                            src={gif.url}
+                            alt={gif.title}
+                            className="card-img-top rounded"
+                            style={{ height: 'auto', width: '100%' }}
+                        />
+                        <div className="card-body">
+                            <h5 className="card-title text-center">{gif.title}</h5>
                         </div>
                     </div>
-                ))}
-            </div>
+                </div>
+            ))}
         </div>
     );
 };
+
+export default GridGif;

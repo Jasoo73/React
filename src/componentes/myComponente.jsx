@@ -1,5 +1,3 @@
-function HelloWorld() {
-    return <h1>Hello World</h1>;
-  }
-  
-  export default HelloWorld;
+const HelloWorld = () => { return <h>HelloWorld!!!!!</h> }
+
+export default HelloWorld;

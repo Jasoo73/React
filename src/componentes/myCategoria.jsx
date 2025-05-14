@@ -1,7 +1,7 @@
 import { useState } from "react";
 // Importa el hook useState de React, que permite manejar el estado dentro de un componente funcional.
 
-export const AddCategory = ({ categories, setCategories }) => {
+const AddCategory = ({ categories, setCategories }) => {
     // El componente recibe dos props:
     // 'categories' es el array de categor�as existentes.
     // 'setCategories' es la funci�n para actualizar dicho array.
@@ -16,7 +16,7 @@ export const AddCategory = ({ categories, setCategories }) => {
     const onCategorySubmit = () => {
         // Funci�n que se ejecuta cuando el usuario hace clic en el bot�n "Agregar".
 
-        if (searchValue.trim().length <= 1) return;
+        if (searchValue.trim().length <= 0) return;
         // Si el valor de 'searchValue' es muy corto (menos de 2 caracteres) se cancela la ejecuci�n de la funci�n.
 
         if (categories.includes(searchValue.trim())) return;
@@ -39,6 +39,8 @@ export const AddCategory = ({ categories, setCategories }) => {
                 type="text"
                 value={searchValue}
                 onChange={onInputChange}
+
+                
             // Input controlado: su valor est� vinculado a 'searchValue' y cada vez que el usuario escribe, 'onInputChange' actualiza el estado.
             />
 
@@ -53,3 +55,4 @@ export const AddCategory = ({ categories, setCategories }) => {
         </div>
     );
 };
+export default AddCategory;
